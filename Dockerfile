@@ -14,16 +14,22 @@ RUN apk add --no-cache \
 
 # Установка переменных среды для Puppeteer
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
+    NODE_ENV=development
 
+# Копируем файлы package.json и package-lock.json
 COPY package*.json ./
 
+# Устанавливаем зависимости
 RUN npm install
 
+# Копируем исходный код
 COPY . .
 
-RUN npm run build
+# Создаем директорию для PDF файлов
+RUN mkdir -p public/pdfs
 
 EXPOSE 3000
 
-CMD ["npm", "start"] 
+# Запускаем в режиме разработки
+CMD ["npm", "run", "dev"] 

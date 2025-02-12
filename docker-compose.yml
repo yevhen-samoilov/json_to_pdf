@@ -1,10 +1,14 @@
-version: '3.8'
 services:
   resume-api:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
+      - .:/app
+      - /app/node_modules
       - ./public:/app/public
     environment:
-      - NODE_ENV=production 
+      - NODE_ENV=development
+    restart: unless-stopped 

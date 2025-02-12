@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "docker:build": "docker-compose build",
+    "docker:start": "docker-compose up",
+    "docker:stop": "docker-compose down"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.2.1",
