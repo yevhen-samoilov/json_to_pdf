@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3030",
-    "build": "next build",
+    "build": "next build -p 3030",
     "start": "next start -p 3030",
-    "docker:build": "docker-compose build",
-    "docker:start": "docker-compose up",
-    "docker:stop": "docker-compose down"
+    "docker:build": "docker-compose build -p 3030",
+    "docker:start": "docker-compose up -p 3030",
+    "docker:stop": "docker-compose down -p 3030"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.2.1",
