@@ -38,7 +38,7 @@ COPY . .
 RUN mkdir -p public/pdfs && \
     chmod -R 777 public/pdfs
 
-EXPOSE 3000
+EXPOSE 3030
 
 # Запускаем в режиме разработки
 CMD ["npm", "run", "dev"] 

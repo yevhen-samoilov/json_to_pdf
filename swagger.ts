@@ -10,7 +10,7 @@ const options: OAS3Options = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "http://localhost:3030",
         description: "Development server",
       },
     ],
