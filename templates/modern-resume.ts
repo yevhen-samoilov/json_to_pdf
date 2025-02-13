@@ -1,4 +1,4 @@
-import { ResumeData, ResumeHeaders, ResumeTheme } from "@/app/types/types"
+import type { ResumeData, ResumeHeaders, ResumeTheme } from "@/app/types/types"
 
 export default function modernResumeTemplate(data: ResumeData, headers: ResumeHeaders, theme: ResumeTheme) {
   const {
@@ -13,6 +13,14 @@ export default function modernResumeTemplate(data: ResumeData, headers: ResumeHe
     highlights = [],
     experiences = [],
     education = [],
+    homecity = "",
+    homecountry = "",
+    currentcity = "",
+    phone = "",
+    email = "",
+    birthdate = "",
+    current_address = "",
+    is_married = "",
   } = data
 
   const {
@@ -60,61 +68,65 @@ export default function modernResumeTemplate(data: ResumeData, headers: ResumeHe
         <div class="w-[35%] bg-gray-50 p-8 relative">
           ${profileImage ? `<img src="${profileImage}" alt="Profile" class="w-48 h-48 rounded-full mx-auto object-cover mb-8">` : ""}
 
-          ${personalInfo
-      ? `
+          ${
+            personalInfo || birthdate || homecity || homecountry || is_married
+              ? `
           <div class="mb-8">
             <h3 class="font-bold text-lg mb-2">${personalData}</h3>
             <p class="text-sm text-gray-600">
-              ${personalInfo}
+              ${[birthdate, homecity, homecountry, is_married, personalInfo].filter(Boolean).join(", ")}
             </p>
           </div>
           `
-      : ""
-    }
+              : ""
+          }
 
-          ${contact.length > 0
-      ? `
+          ${
+            contact.length > 0 || current_address || currentcity || email || phone
+              ? `
           <div class="mb-8">
             <h3 class="font-bold text-lg mb-2">${contactHeader}</h3>
             <div class="text-sm text-gray-600">
-              ${contact.map((line: string) => `<p>${line}</p>`).join("")}
+              <p>${[current_address, currentcity, email, phone, ...contact].filter(Boolean).join(", ")}</p>
             </div>
           </div>
           `
-      : ""
-    }
+              : ""
+          }
 
-          ${skills.length > 0
-      ? `
+          ${
+            skills.length > 0
+              ? `
           <div class="mb-8">
             <h3 class="font-bold text-lg mb-2">${skillset}</h3>
             <div class="space-y-2">
               ${skills
-        .map(
-          (skill: { name: string; level: number }) => `
+                .map(
+                  (skill: { name: string; level: number }) => `
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-gray-600">${skill.name}</span>
                   <div class="flex gap-1">
                     ${[...Array(4)]
-              .map(
-                (_, i) => `
+                      .map(
+                        (_, i) => `
                       <div class="w-3 h-3 rounded-full ${i < skill.level ? "bg-primary" : "bg-gray-300"}"></div>
                     `,
-              )
-              .join("")}
+                      )
+                      .join("")}
                   </div>
                 </div>
               `,
-        )
-        .join("")}
+                )
+                .join("")}
             </div>
           </div>
           `
-      : ""
-    }
+              : ""
+          }
 
-          ${languages.length > 0
-      ? `
+          ${
+            languages.length > 0
+              ? `
           <div>
             <h3 class="font-bold text-lg mb-2">${languagesHeader}</h3>
             <div class="text-sm text-gray-600">
@@ -122,8 +134,8 @@ export default function modernResumeTemplate(data: ResumeData, headers: ResumeHe
             </div>
           </div>
           `
-      : ""
-    }
+              : ""
+          }
 
           <div class="absolute top-0 right-0 h-full">
             <div class="h-full w-2 bg-primary"></div>
@@ -131,39 +143,43 @@ export default function modernResumeTemplate(data: ResumeData, headers: ResumeHe
         </div>
 
         <div class="w-[65%] p-8 pl-16">
-          ${firstName || lastName
-      ? `
+          ${
+            firstName || lastName
+              ? `
           <header class="mb-12">
             <h1 class="text-4xl font-bold mb-2">${firstName} ${lastName}</h1>
             ${title ? `<h2 class="text-2xl italic">${title}</h2>` : ""}
           </header>
           `
-      : ""
-    }
+              : ""
+          }
 
-          ${highlights.length > 0
-      ? `
+          ${
+            highlights.length > 0
+              ? `
           <div class="mb-12">
             <ul class="space-y-3 text-sm">
               ${highlights.map((item: string) => `<li>${item}</li>`).join("")}
             </ul>
           </div>
           `
-      : ""
-    }
+              : ""
+          }
 
-          ${experiences.length > 0 || education.length > 0
-      ? `
+          ${
+            experiences.length > 0 || education.length > 0
+              ? `
           <div>
             <h2 class="text-2xl font-bold mb-6">LEBENSLAUF</h2>
 
-            ${experiences.length > 0
-        ? `
+            ${
+              experiences.length > 0
+                ? `
             <div class="mb-8">
               <h3 class="text-lg font-bold mb-4">${experience}</h3>
               ${experiences
-          .map(
-            (exp: { period: string; title: string; responsibilities: string[] }) => `
+                .map(
+                  (exp: { period: string; title: string; responsibilities: string[] }) => `
                 <div class="mb-4">
                   <div class="grid grid-cols-[120px_1fr] mb-2">
                     <span class="text-xs text-gray-600">${exp.period}</span>
@@ -176,21 +192,22 @@ export default function modernResumeTemplate(data: ResumeData, headers: ResumeHe
                   </ul>
                 </div>
               `,
-          )
-          .join("")}
+                )
+                .join("")}
             </div>
             `
-        : ""
-      }
+                : ""
+            }
 
-            ${education.length > 0
-        ? `
+            ${
+              education.length > 0
+                ? `
             <div>
               <h3 class="text-lg font-bold mb-4">${educationHeader}</h3>
               <div class="space-y-4">
                 ${education
-          .map(
-            (edu: { period: string; institution: string; degree?: string }) => `
+                  .map(
+                    (edu: { period: string; institution: string; degree?: string }) => `
                   <div class="flex justify-between text-sm">
                     <span>${edu.period}</span>
                     <div>
@@ -199,17 +216,17 @@ export default function modernResumeTemplate(data: ResumeData, headers: ResumeHe
                     </div>
                   </div>
                 `,
-          )
-          .join("")}
+                  )
+                  .join("")}
               </div>
             </div>
             `
-        : ""
-      }
+                : ""
+            }
           </div>
           `
-      : ""
-    }
+              : ""
+          }
 
           <footer class="text-right text-sm text-gray-500 mt-8">Seite 1 von 1</footer>
         </div>

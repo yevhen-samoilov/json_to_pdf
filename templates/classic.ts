@@ -1,31 +1,39 @@
-import { ResumeData, ResumeHeaders, ResumeTheme } from "@/app/types/types"
+import type { ResumeData, ResumeHeaders, ResumeTheme } from "@/app/types/types"
 
 export default function classicTemplate(data: ResumeData, headers: ResumeHeaders, theme: ResumeTheme) {
-    const {
-        firstName = "",
-        lastName = "",
-        title = "",
-        profileImage = "",
-        personalInfo = "",
-        contact = [],
-        skills = [],
-        languages = [],
-        highlights = [],
-        experiences = [],
-        education = [],
-    } = data
+  const {
+    firstName = "",
+    lastName = "",
+    title = "",
+    profileImage = "",
+    personalInfo = "",
+    contact = [],
+    skills = [],
+    languages = [],
+    highlights = [],
+    experiences = [],
+    education = [],
+    homecity = "",
+    homecountry = "",
+    currentcity = "",
+    phone = "",
+    email = "",
+    birthdate = "",
+    current_address = "",
+    is_married = "",
+  } = data
 
-    const {
-        personalData = "Personal Information",
-        skillset = "Professional Skills",
-        languages: languagesHeader = "Languages",
-        experience = "Professional Experience",
-        education: educationHeader = "Education",
-    } = headers
+  const {
+    personalData = "Personal Information",
+    skillset = "Professional Skills",
+    languages: languagesHeader = "Languages",
+    experience = "Professional Experience",
+    education: educationHeader = "Education",
+  } = headers
 
-    const { primaryColor = "#2C3E50", fontFamily = "Georgia, serif" } = theme
+  const { primaryColor = "#2C3E50", fontFamily = "Georgia, serif" } = theme
 
-    return `
+  return `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -81,26 +89,29 @@ export default function classicTemplate(data: ResumeData, headers: ResumeHeaders
         <div id="resume" class="w-[210mm] h-[297mm] mx-auto bg-white p-8 leading-relaxed text-sm">
           <!-- Header Section -->
           <header class="text-center mb-6">
-            ${firstName || lastName
-            ? `
+            ${
+              firstName || lastName
+                ? `
               <h1 class="text-3xl font-bold text-primary mb-1">${firstName} ${lastName}</h1>
             `
-            : ""
-        }
-            ${title
-            ? `
+                : ""
+            }
+            ${
+              title
+                ? `
               <h2 class="text-xl text-gray-600 mb-2">${title}</h2>
             `
-            : ""
-        }
-            ${contact.length > 0
-            ? `
+                : ""
+            }
+            ${
+              contact.length > 0 || current_address || currentcity || email || phone
+                ? `
               <div class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-gray-600">
-                ${contact.map((item) => `<span>${item}</span>`).join(" • ")}
+                ${[current_address, currentcity, email, phone, ...contact].filter(Boolean).join(" • ")}
               </div>
             `
-            : ""
-        }
+                : ""
+            }
           </header>
   
           <!-- Two-column layout for main content -->
@@ -109,26 +120,31 @@ export default function classicTemplate(data: ResumeData, headers: ResumeHeaders
             <div class="w-full md:w-2/3 px-4">
               <!-- Profile Image and Personal Info -->
               <div class="mb-6 flex items-start gap-4">
-                ${profileImage
-            ? `
+                ${
+                  profileImage
+                    ? `
                   <img src="${profileImage}" alt="Profile" class="w-24 h-24 rounded-full object-cover shadow-md">
                 `
-            : ""
-        }
-                ${personalInfo
-            ? `
+                    : ""
+                }
+                ${
+                  personalInfo || birthdate || homecity || homecountry || is_married
+                    ? `
                   <div class="flex-1">
                     <h3 class="text-base font-bold text-primary mb-2 section-title">${personalData}</h3>
-                    <p class="text-gray-700 leading-snug">${personalInfo}</p>
+                    <p class="text-gray-700 leading-snug">
+                      ${[birthdate, homecity, homecountry, is_married, personalInfo].filter(Boolean).join(", ")}
+                    </p>
                   </div>
                 `
-            : ""
-        }
+                    : ""
+                }
               </div>
   
               <!-- Professional Summary -->
-              ${highlights.length > 0
-            ? `
+              ${
+                highlights.length > 0
+                  ? `
                 <section class="mb-6">
                   <h3 class="text-base font-bold text-primary mb-2 section-title">Professional Summary</h3>
                   <ul class="list-disc list-inside space-y-1 text-gray-700">
@@ -136,18 +152,19 @@ export default function classicTemplate(data: ResumeData, headers: ResumeHeaders
                   </ul>
                 </section>
               `
-            : ""
-        }
+                  : ""
+              }
   
               <!-- Experience Section -->
-              ${experiences.length > 0
-            ? `
+              ${
+                experiences.length > 0
+                  ? `
                 <section class="mb-6">
                   <h3 class="text-base font-bold text-primary mb-2 section-title">${experience}</h3>
                   <div class="space-y-4">
                     ${experiences
-                .map(
-                    (exp) => `
+                      .map(
+                        (exp) => `
                       <div>
                         <div class="flex justify-between items-baseline mb-1">
                           <h4 class="font-bold text-gray-800">${exp.title}</h4>
@@ -158,26 +175,27 @@ export default function classicTemplate(data: ResumeData, headers: ResumeHeaders
                         </ul>
                       </div>
                     `,
-                )
-                .join("")}
+                      )
+                      .join("")}
                   </div>
                 </section>
               `
-            : ""
-        }
+                  : ""
+              }
             </div>
   
             <!-- Right column -->
             <div class="w-full md:w-1/3 px-4">
               <!-- Education Section -->
-              ${education.length > 0
-            ? `
+              ${
+                education.length > 0
+                  ? `
                 <section class="mb-6">
                   <h3 class="text-base font-bold text-primary mb-2 section-title">${educationHeader}</h3>
                   <div class="space-y-3">
                     ${education
-                .map(
-                    (edu) => `
+                      .map(
+                        (edu) => `
                       <div>
                         <div class="flex justify-between items-baseline mb-1">
                           <h4 class="font-bold text-gray-800">${edu.institution}</h4>
@@ -186,23 +204,24 @@ export default function classicTemplate(data: ResumeData, headers: ResumeHeaders
                         ${edu.degree ? `<p class="text-gray-700">${edu.degree}</p>` : ""}
                       </div>
                     `,
-                )
-                .join("")}
+                      )
+                      .join("")}
                   </div>
                 </section>
               `
-            : ""
-        }
+                  : ""
+              }
   
               <!-- Skills Section -->
-              ${skills.length > 0
-            ? `
+              ${
+                skills.length > 0
+                  ? `
                 <section class="mb-6">
                   <h3 class="text-base font-bold text-primary mb-2 section-title">${skillset}</h3>
                   <div class="space-y-2">
                     ${skills
-                .map(
-                    (skill) => `
+                      .map(
+                        (skill) => `
                       <div>
                         <div class="flex justify-between mb-1">
                           <span class="text-gray-700">${skill.name}</span>
@@ -212,17 +231,18 @@ export default function classicTemplate(data: ResumeData, headers: ResumeHeaders
                         </div>
                       </div>
                     `,
-                )
-                .join("")}
+                      )
+                      .join("")}
                   </div>
                 </section>
               `
-            : ""
-        }
+                  : ""
+              }
   
               <!-- Languages Section -->
-              ${languages.length > 0
-            ? `
+              ${
+                languages.length > 0
+                  ? `
                 <section class="mb-6">
                   <h3 class="text-base font-bold text-primary mb-2 section-title">${languagesHeader}</h3>
                   <ul class="list-inside text-gray-700 space-y-1">
@@ -230,8 +250,8 @@ export default function classicTemplate(data: ResumeData, headers: ResumeHeaders
                   </ul>
                 </section>
               `
-            : ""
-        }
+                  : ""
+              }
             </div>
           </div>
         </div>

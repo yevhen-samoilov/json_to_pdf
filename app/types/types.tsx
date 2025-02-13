@@ -10,21 +10,29 @@ export interface ResumeData {
     highlights?: string[]
     experiences?: { period: string; title: string; responsibilities: string[] }[]
     education?: { period: string; institution: string; degree?: string }[]
-  }
+    homecity?: string
+    homecountry?: string
+    currentcity?: string
+    phone?: string
+    email?: string
+    birthdate?: string
+    current_address?: string
+    is_married?: string
+}
   
-  export interface ResumeHeaders {
+export interface ResumeHeaders {
     personalData?: string
     contact?: string
     skillset?: string
     languages?: string
     experience?: string
     education?: string
-  }
+}
   
-  export interface ResumeTheme {
+export interface ResumeTheme {
     name: string
     primaryColor?: string
     fontFamily?: string
-  }
+}
   
   

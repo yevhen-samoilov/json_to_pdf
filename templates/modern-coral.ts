@@ -1,31 +1,39 @@
-import { ResumeData, ResumeHeaders, ResumeTheme } from "@/app/types/types"
+import type { ResumeData, ResumeHeaders, ResumeTheme } from "@/app/types/types"
 
 export default function modernCoralTemplate(data: ResumeData, headers: ResumeHeaders, theme: ResumeTheme) {
-    const {
-        firstName = "",
-        lastName = "",
-        title = "",
-        profileImage = "",
-        personalInfo = "",
-        contact = [],
-        skills = [],
-        languages = [],
-        highlights = [],
-        experiences = [],
-        education = [],
-    } = data
+  const {
+    firstName = "",
+    lastName = "",
+    title = "",
+    profileImage = "",
+    personalInfo = "",
+    contact = [],
+    skills = [],
+    languages = [],
+    highlights = [],
+    experiences = [],
+    education = [],
+    homecity = "",
+    homecountry = "",
+    currentcity = "",
+    phone = "",
+    email = "",
+    birthdate = "",
+    current_address = "",
+    is_married = "",
+  } = data
 
-    const {
-        contact: contactHeader = "",
-        skillset = "",
-        languages: languagesHeader = "",
-        experience = "",
-        education: educationHeader = "",
-    } = headers
+  const {
+    contact: contactHeader = "",
+    skillset = "",
+    languages: languagesHeader = "",
+    experience = "",
+    education: educationHeader = "",
+  } = headers
 
-    const { primaryColor = "#FF4D37", fontFamily = "Inter, sans-serif" } = theme
+  const { primaryColor = "#FF4D37", fontFamily = "Inter, sans-serif" } = theme
 
-    return `
+  return `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -57,31 +65,33 @@ export default function modernCoralTemplate(data: ResumeData, headers: ResumeHea
       <body class="bg-white">
         <div class="max-w-[210mm] mx-auto bg-white min-h-[297mm] flex">
           <div class="w-[35%] bg-primary/10 p-8">
-            ${profileImage
-            ? `
+            ${
+              profileImage
+                ? `
               <div class="mb-8">
                 <img src="${profileImage}" alt="Profile" class="w-48 h-48 rounded-lg mx-auto object-cover shadow-lg">
               </div>
             `
-            : ""
-        }
+                : ""
+            }
   
             <div class="space-y-8">
               <div class="border-b-2 border-primary pb-2">
                 <h2 class="text-xl font-bold text-primary uppercase">${contactHeader}</h2>
-                <div class="mt-4 space-y-2">
-                  ${contact.map((item) => `<p class="text-gray-700">${item}</p>`).join("")}
+                <div class="mt-4">
+                  <p class="text-gray-700">${[current_address, currentcity, email, phone, ...contact].filter(Boolean).join(", ")}</p>
                 </div>
               </div>
   
-              ${skills.length > 0
-            ? `
+              ${
+                skills.length > 0
+                  ? `
                 <div class="border-b-2 border-primary pb-2">
                   <h2 class="text-xl font-bold text-primary uppercase">${skillset}</h2>
                   <div class="mt-4 space-y-3">
                     ${skills
-                .map(
-                    (skill) => `
+                      .map(
+                        (skill) => `
                       <div>
                         <div class="flex justify-between mb-1">
                           <span class="text-gray-700">${skill.name}</span>
@@ -91,16 +101,17 @@ export default function modernCoralTemplate(data: ResumeData, headers: ResumeHea
                         </div>
                       </div>
                     `,
-                )
-                .join("")}
+                      )
+                      .join("")}
                   </div>
                 </div>
               `
-            : ""
-        }
+                  : ""
+              }
   
-              ${languages.length > 0
-            ? `
+              ${
+                languages.length > 0
+                  ? `
                 <div class="border-b-2 border-primary pb-2">
                   <h2 class="text-xl font-bold text-primary uppercase">${languagesHeader}</h2>
                   <div class="mt-4 space-y-2">
@@ -108,18 +119,20 @@ export default function modernCoralTemplate(data: ResumeData, headers: ResumeHea
                   </div>
                 </div>
               `
-            : ""
-        }
+                  : ""
+              }
             </div>
           </div>
   
           <div class="w-[65%] p-8 pl-12">
-            ${firstName || lastName
-            ? `
+            ${
+              firstName || lastName
+                ? `
               <header class="mb-8">
                 <h1 class="text-5xl font-bold text-primary mb-2">${firstName}<br/>${lastName}</h1>
-                ${title
-                ? `
+                ${
+                  title
+                    ? `
                   <div class="relative">
                     <div class="flex items-center gap-4">
                       <span class="text-xl text-gray-600 uppercase">${title}</span>
@@ -127,24 +140,26 @@ export default function modernCoralTemplate(data: ResumeData, headers: ResumeHea
                     </div>
                   </div>
                 `
-                : ""
-            }
+                    : ""
+                }
               </header>
             `
-            : ""
-        }
+                : ""
+            }
   
-            ${personalInfo
-            ? `
+            ${
+              personalInfo || birthdate || homecity || homecountry || is_married
+                ? `
               <div class="mb-8">
-                <p class="text-gray-600">${personalInfo}</p>
+                <p class="text-gray-600">${[birthdate, homecity, homecountry, is_married, personalInfo].filter(Boolean).join(", ")}</p>
               </div>
-            `
-            : ""
-        }
+              `
+                : ""
+            }
   
-            ${highlights.length > 0
-            ? `
+            ${
+              highlights.length > 0
+                ? `
               <div class="mb-12">
                 <h2 class="text-xl font-bold text-primary uppercase mb-4">HIGHLIGHTS</h2>
                 <ul class="list-disc list-inside space-y-2">
@@ -152,17 +167,18 @@ export default function modernCoralTemplate(data: ResumeData, headers: ResumeHea
                 </ul>
               </div>
             `
-            : ""
-        }
+                : ""
+            }
   
-            ${experiences.length > 0
-            ? `
+            ${
+              experiences.length > 0
+                ? `
               <div class="mb-12">
                 <h2 class="text-xl font-bold text-primary uppercase mb-4">${experience}</h2>
                 <div class="space-y-6">
                   ${experiences
-                .map(
-                    (exp) => `
+                    .map(
+                      (exp) => `
                     <div>
                       <div class="flex items-center gap-4 mb-2">
                         <span class="text-sm text-gray-500">${exp.period}</span>
@@ -174,22 +190,23 @@ export default function modernCoralTemplate(data: ResumeData, headers: ResumeHea
                       </ul>
                     </div>
                   `,
-                )
-                .join("")}
+                    )
+                    .join("")}
                 </div>
               </div>
             `
-            : ""
-        }
+                : ""
+            }
   
-            ${education.length > 0
-            ? `
+            ${
+              education.length > 0
+                ? `
               <div>
                 <h2 class="text-xl font-bold text-primary uppercase mb-4">${educationHeader}</h2>
                 <div class="space-y-4">
                   ${education
-                .map(
-                    (edu) => `
+                    .map(
+                      (edu) => `
                     <div>
                       <div class="flex items-center gap-4 mb-2">
                         <span class="text-sm text-gray-500">${edu.period}</span>
@@ -199,13 +216,13 @@ export default function modernCoralTemplate(data: ResumeData, headers: ResumeHea
                       ${edu.degree ? `<p class="text-gray-600">${edu.degree}</p>` : ""}
                     </div>
                   `,
-                )
-                .join("")}
+                    )
+                    .join("")}
                 </div>
               </div>
             `
-            : ""
-        }
+                : ""
+            }
           </div>
         </div>
       </body>

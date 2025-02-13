@@ -7,7 +7,7 @@ import crypto from "crypto"
 // Импортируем шаблоны
 import modernResumeTemplate from "../../../templates/modern-resume"
 import classicTemplate from "../../../templates/classic"
-import modernCoralTemplate from "@/templates/modern-colar"
+import modernCoralTemplate from "../../../templates/modern-coral"
 
 // Объект с доступными шаблонами
 const templates: { [key: string]: (data: any, headers: any, theme: any) => string } = {
@@ -21,8 +21,35 @@ function generateUniqueFileName() {
   return crypto.randomBytes(16).toString("hex") + ".pdf"
 }
 
+// Добавляем функцию проверки авторизации
+function checkAuth(req: NextRequest) {
+  const authHeader = req.headers.get('authorization')
+  
+  if (!authHeader || !authHeader.startsWith('Basic ')) {
+    return false
+  }
+
+  const base64Credentials = authHeader.split(' ')[1]
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8')
+  const [username, password] = credentials.split(':')
+
+  return username === 'ausleb' && password === 'r8nSI6XGoZ9iwX'
+}
 
 export async function POST(req: NextRequest) {
+  // Проверяем авторизацию
+  if (!checkAuth(req)) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { 
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Protected"'
+        }
+      }
+    )
+  }
+
   try {
     const { data, headers, theme } = await req.json()
 
@@ -56,11 +83,13 @@ export async function POST(req: NextRequest) {
 
     const browser = await puppeteer.launch({
       headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox",
-        '--disable-dev-shm-usage', // Добавляем эту опцию для Linux
-        '--disable-gpu', // Отключаем GPU
-        '--disable-software-rasterizer', // Отключаем программный растеризатор
-        '--font-render-hinting=none', // Улучшает рендеринг шрифтов
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        '--disable-dev-shm-usage', 
+        '--disable-gpu',
+        '--disable-software-rasterizer',
+        '--font-render-hinting=none',
         '--disable-web-security'
       ],
       // executablePath: '/usr/bin/chromium-browser',
