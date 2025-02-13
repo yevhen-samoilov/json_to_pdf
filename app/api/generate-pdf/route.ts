@@ -56,8 +56,15 @@ export async function POST(req: NextRequest) {
 
     const browser = await puppeteer.launch({
       headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      executablePath: process.env.CHROME_BIN || undefined,
+      args: ["--no-sandbox", "--disable-setuid-sandbox",
+        '--disable-dev-shm-usage', // Добавляем эту опцию для Linux
+        '--disable-gpu', // Отключаем GPU
+        '--disable-software-rasterizer', // Отключаем программный растеризатор
+        '--font-render-hinting=none', // Улучшает рендеринг шрифтов
+        '--disable-web-security'
+      ],
+      // executablePath: '/usr/bin/chromium-browser',
+      // executablePath: process.env.CHROME_BIN || undefined,
       timeout: 60000,
     })
     const page = await browser.newPage()
