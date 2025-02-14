@@ -33,7 +33,7 @@ function checkAuth(req: NextRequest) {
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8')
   const [username, password] = credentials.split(':')
 
-  return username === 'ausleb' && password === 'r8nSI6XGoZ9iwX'
+  return username === process.env.USERNAME && password === process.env.PASSWORD
 }
 
 export async function POST(req: NextRequest) {
